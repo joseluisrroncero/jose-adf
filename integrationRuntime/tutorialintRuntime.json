@@ -1,0 +1,7 @@
+{
+	"name": "tutorialintRuntime",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "entorno de ejecución auto-hospedado"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"name": "jlrr-adf",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "9b023cc1-3b96-41e1-972b-e9611c5a1139",
+		"tenantId": "b5e7ab8d-dd67-4ec2-bae5-e6a4f6474a64"
+	}
+}
