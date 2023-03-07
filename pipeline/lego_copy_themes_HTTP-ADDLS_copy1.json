@@ -182,7 +182,13 @@
 				"inputs": [
 					{
 						"referenceName": "HTTP_source",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"HTTP": {
+								"value": "@pipeline().parameters.File",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
@@ -193,6 +199,12 @@
 				]
 			}
 		],
+		"parameters": {
+			"File": {
+				"type": "String",
+				"defaultValue": "File"
+			}
+		},
 		"annotations": [],
 		"lastPublishTime": "2023-03-06T11:23:47Z"
 	},
