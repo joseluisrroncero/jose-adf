@@ -182,7 +182,10 @@
 				"inputs": [
 					{
 						"referenceName": "HTTP_source",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "FileName"
+						}
 					}
 				],
 				"outputs": [
