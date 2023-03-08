@@ -19,10 +19,6 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"AzureSqlDatabase1\""
 		},
-		"SqlServer1_connectionString": {
-			"type": "secureString",
-			"metadata": "Cadena protegida para \"connectionString\"de \"SqlServer1\""
-		},
 		"ADLS_tutorialdatalake_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://storagepplu.dfs.core.windows.net/"
@@ -86,9 +82,6 @@
 					"AzureSqlDatabase1_connectionString": {
 						"value": "[parameters('AzureSqlDatabase1_connectionString')]"
 					},
-					"SqlServer1_connectionString": {
-						"value": "[parameters('SqlServer1_connectionString')]"
-					},
 					"ADLS_tutorialdatalake_properties_typeProperties_url": {
 						"value": "[parameters('ADLS_tutorialdatalake_properties_typeProperties_url')]"
 					},
@@ -113,26 +106,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "jlrr-adf_ArmTemplate_1",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2018-02-01",
-			"properties": {
-				"mode": "incremental",
-				"templateLink": {
-					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"factoryName": {
-						"value": "[parameters('factoryName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'jlrr-adf_ArmTemplate_0')]"
-			]
 		}
 	]
 }

@@ -14,9 +14,6 @@
 		"AzureSqlDatabase1_connectionString": {
 			"value": ""
 		},
-		"SqlServer1_connectionString": {
-			"value": ""
-		},
 		"ADLS_tutorialdatalake_properties_typeProperties_url": {
 			"value": "https://storagepplu.dfs.core.windows.net/"
 		},
