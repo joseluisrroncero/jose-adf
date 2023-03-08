@@ -35,9 +35,13 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true,
@@ -75,18 +79,12 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "AzureSqlTable1",
+						"referenceName": "ADLS_dest",
 						"type": "DatasetReference"
 					}
 				]
 			}
 		],
-		"parameters": {
-			"FileName": {
-				"type": "string",
-				"defaultValue": "FileName"
-			}
-		},
 		"annotations": [],
 		"lastPublishTime": "2023-03-07T11:07:29Z"
 	},
