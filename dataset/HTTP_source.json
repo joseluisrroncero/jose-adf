@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "HttpServerLocation",
-				"relativeUrl": "sets.csv"
+				"relativeUrl": "themes.csv.gz"
 			},
 			"columnDelimiter": ",",
 			"rowDelimiter": "\n",
