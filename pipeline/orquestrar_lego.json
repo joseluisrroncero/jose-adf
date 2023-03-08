@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "lego_copy_themes_HTTP-ADDLS_copy1",
+						"referenceName": "lego_copy_themes_HTTP-ADDLS",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -39,7 +39,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "FileName"
+				"defaultValue": "themes.csv"
 			}
 		},
 		"annotations": [],
