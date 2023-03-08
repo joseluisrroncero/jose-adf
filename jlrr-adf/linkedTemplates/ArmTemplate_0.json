@@ -278,12 +278,21 @@
 					"referenceName": "HttpServer1",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"FileName": {
+						"type": "string",
+						"defaultValue": "FileName"
+					}
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "HttpServerLocation",
-						"relativeUrl": "themes.csv.gz"
+						"relativeUrl": {
+							"value": "@dataset().FileName",
+							"type": "Expression"
+						}
 					},
 					"columnDelimiter": ",",
 					"rowDelimiter": "\n",
@@ -421,11 +430,11 @@
 						"userProperties": [
 							{
 								"name": "Source",
-								"value": "themes.csv.gz"
+								"value": "@{'FileName'}"
 							},
 							{
 								"name": "Destination",
-								"value": "lego//themes.parquet"
+								"value": "lego.themes"
 							}
 						],
 						"typeProperties": {
@@ -457,7 +466,7 @@
 										"referenceName": "AzureDataLakeStorageTutorial",
 										"type": "LinkedServiceReference"
 									},
-									"path": "lego/errors/themes"
+									"path": "lego/errors/@[pipeline{}.parameters.FileName}"
 								}
 							},
 							"translator": {
@@ -473,7 +482,9 @@
 							{
 								"referenceName": "HTTP_source",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"FileName": "FileName"
+								}
 							}
 						],
 						"outputs": [
@@ -488,6 +499,12 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string",
+						"defaultValue": "FileName"
+					}
 				},
 				"annotations": [],
 				"lastPublishTime": "2023-03-07T11:07:29Z"
@@ -687,7 +704,9 @@
 							{
 								"referenceName": "HTTP_source",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"FileName": "FileName"
+								}
 							}
 						],
 						"outputs": [
@@ -815,6 +834,143 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Variables')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set Files",
+						"description": "",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Files",
+							"value": [
+								"colors",
+								"inventories",
+								"inventory_parts",
+								"part_categories",
+								"parts",
+								"sets",
+								"themes"
+							]
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Set Files",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@variables('Files')",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "Append Inventory Sets",
+									"description": "",
+									"type": "AppendVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Files",
+										"value": "inventory_sets"
+									}
+								},
+								{
+									"name": "Append Part Relationships",
+									"type": "AppendVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Files",
+										"value": "part_relationships"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "ForEach File",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "If Condition1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Execute Pipeline1').output",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "lego_copy_themes_HTTP-ADDLS",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"FileName": {
+												"value": "@item{}",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"LoadAllFiles": {
+						"type": "bool",
+						"defaultValue": false
+					}
+				},
+				"variables": {
+					"Files": {
+						"type": "Array"
+					},
+					"ListOfFiles": {
+						"type": "String"
+					},
+					"LoadAllFiles": {
+						"type": "Boolean",
+						"defaultValue": true
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/lego_copy_themes_HTTP-ADDLS')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/orquestrar_lego')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -860,42 +1016,18 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
+				"parameters": {
+					"FileName": {
+						"type": "string",
+						"defaultValue": "FileName"
+					}
+				},
 				"annotations": [],
 				"lastPublishTime": "2023-03-02T13:14:38Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/lego_copy_themes_HTTP-ADDLS_copy1')]",
 				"[concat(variables('factoryId'), '/pipelines/Lego_ADLS_to_ASQL_Themes')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "orquestrar_lego",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Hour",
-						"interval": 24,
-						"startTime": "2023-03-03T11:09:00Z",
-						"timeZone": "UTC"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/orquestrar_lego')]"
 			]
 		}
 	]
