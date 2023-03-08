@@ -5,6 +5,10 @@
 		"typeProperties": {
 			"sources": [
 				{
+					"dataset": {
+						"referenceName": "ADLS_lego_themes",
+						"type": "DatasetReference"
+					},
 					"name": "ADLSLegoThemes"
 				}
 			],
@@ -23,8 +27,15 @@
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> ADLSLegoThemes",
+				"source(output(",
+				"          TemeID as string,",
+				"          ThemeName as string,",
+				"          Parent_ThemeID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> ADLSLegoThemes",
 				"ADLSLegoThemes derive(load_date = currentDate()) ~> AddLoadDate",
 				"AddLoadDate sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",

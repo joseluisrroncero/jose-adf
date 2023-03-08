@@ -1,5 +1,5 @@
 {
-	"name": "ADLS_dest",
+	"name": "ADLS_lego_themes",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorageTutorial",
@@ -15,7 +15,20 @@
 			},
 			"compressionCodec": "snappy"
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "TemeID",
+				"type": "UTF8"
+			},
+			{
+				"name": "ThemeName",
+				"type": "UTF8"
+			},
+			{
+				"name": "Parent_ThemeID",
+				"type": "UTF8"
+			}
+		]
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }

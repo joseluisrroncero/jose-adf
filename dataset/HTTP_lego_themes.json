@@ -1,5 +1,5 @@
 {
-	"name": "HTTP_source",
+	"name": "HTTP_lego_themes",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "HttpServer1",
