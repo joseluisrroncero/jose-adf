@@ -16,11 +16,11 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "themes.csv.gz"
+						"value": "@{'FileName'}"
 					},
 					{
 						"name": "Destination",
-						"value": "lego//themes.parquet"
+						"value": "lego.themes"
 					}
 				],
 				"typeProperties": {
@@ -52,7 +52,7 @@
 								"referenceName": "AzureDataLakeStorageTutorial",
 								"type": "LinkedServiceReference"
 							},
-							"path": "lego/errors/themes"
+							"path": "lego/errors/@[pipeline{}.parameters.FileName}"
 						}
 					},
 					"translator": {
@@ -67,7 +67,10 @@
 				"inputs": [
 					{
 						"referenceName": "HTTP_source",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "FileName"
+						}
 					}
 				],
 				"outputs": [
@@ -78,6 +81,12 @@
 				]
 			}
 		],
+		"parameters": {
+			"FileName": {
+				"type": "string",
+				"defaultValue": "FileName"
+			}
+		},
 		"annotations": [],
 		"lastPublishTime": "2023-03-07T11:07:29Z"
 	},
