@@ -723,39 +723,44 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Lego_ADLS_to_ASQL_Themes_copy1')]",
+			"name": "[concat(parameters('factoryName'), '/orchestrating_lego')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Data flow1",
-						"type": "ExecuteDataFlow",
+						"name": "Execute HTTP to ADLS",
+						"type": "ExecutePipeline",
 						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
 						"userProperties": [],
 						"typeProperties": {
-							"dataflow": {
-								"referenceName": "lego_themes",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"ADLSlegoThemes": {},
-									"ASQLlegoThemes": {}
-								}
+							"pipeline": {
+								"referenceName": "lego_copy_themes_HTTP_ADLS",
+								"type": "PipelineReference"
 							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute ADLS to ASQL",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Execute HTTP to ADLS",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Lego_ADLS_to_ASQL_Themes",
+								"type": "PipelineReference"
 							},
-							"traceLevel": "Fine"
+							"waitOnCompletion": true,
+							"parameters": {}
 						}
 					}
 				],
@@ -766,7 +771,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/lego_themes')]"
+				"[concat(variables('factoryId'), '/pipelines/lego_copy_themes_HTTP_ADLS')]",
+				"[concat(variables('factoryId'), '/pipelines/Lego_ADLS_to_ASQL_Themes')]"
 			]
 		}
 	]
