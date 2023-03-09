@@ -1,0 +1,16 @@
+{
+	"name": "test_Fran",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "newtest",
+			"table": "table"
+		}
+	}
+}
