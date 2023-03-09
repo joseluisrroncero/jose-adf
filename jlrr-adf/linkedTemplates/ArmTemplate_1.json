@@ -13,7 +13,57 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"name": "[concat(parameters('factoryName'), '/orchestrating_lego')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Execute HTTP to ADLS",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "lego_copy_themes_HTTP_ADLS",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute ADLS to ASQL",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Execute HTTP to ADLS",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Lego_ADLS_to_ASQL_Themes",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ScheduleTrigger')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -22,7 +72,7 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "orquestrar_lego",
+							"referenceName": "orchestrating_lego",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
@@ -31,14 +81,26 @@
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
-						"frequency": "Hour",
-						"interval": 24,
-						"startTime": "2023-03-03T11:09:00Z",
-						"timeZone": "UTC"
+						"frequency": "Week",
+						"interval": 1,
+						"startTime": "2023-03-09T09:22:00Z",
+						"endTime": "2023-03-09T09:22:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"hours": [
+								13
+							],
+							"weekDays": [
+								"Sunday",
+								"Friday"
+							]
+						}
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/orchestrating_lego')]"
+			]
 		}
 	]
 }

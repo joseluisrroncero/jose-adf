@@ -361,6 +361,27 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/test_Fran')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "newtest",
+					"table": "table"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/lego_copy_themes_HTTP_ADLS')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -614,7 +635,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "SQL_test",
+								"referenceName": "test_Fran",
 								"type": "DatasetReference"
 							},
 							"name": "ASQLlegoThemes"
@@ -651,7 +672,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ADLS_lego_themes')]",
-				"[concat(variables('factoryId'), '/datasets/SQL_test')]"
+				"[concat(variables('factoryId'), '/datasets/test_Fran')]"
 			]
 		},
 		{
@@ -702,44 +723,39 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/orchestrating_lego')]",
+			"name": "[concat(parameters('factoryName'), '/Lego_ADLS_to_ASQL_Themes_copy1')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Execute HTTP to ADLS",
-						"type": "ExecutePipeline",
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
 						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
 						"userProperties": [],
 						"typeProperties": {
-							"pipeline": {
-								"referenceName": "lego_copy_themes_HTTP_ADLS",
-								"type": "PipelineReference"
+							"dataflow": {
+								"referenceName": "lego_themes",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"ADLSlegoThemes": {},
+									"ASQLlegoThemes": {}
+								}
 							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Execute ADLS to ASQL",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Execute HTTP to ADLS",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Lego_ADLS_to_ASQL_Themes",
-								"type": "PipelineReference"
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
 							},
-							"waitOnCompletion": true,
-							"parameters": {}
+							"traceLevel": "Fine"
 						}
 					}
 				],
@@ -750,48 +766,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/lego_copy_themes_HTTP_ADLS')]",
-				"[concat(variables('factoryId'), '/pipelines/Lego_ADLS_to_ASQL_Themes')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ScheduleTrigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "orchestrating_lego",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Week",
-						"interval": 1,
-						"startTime": "2023-03-09T09:22:00Z",
-						"endTime": "2023-03-09T09:22:00Z",
-						"timeZone": "UTC",
-						"schedule": {
-							"hours": [
-								13
-							],
-							"weekDays": [
-								"Sunday",
-								"Friday"
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/orchestrating_lego')]"
+				"[concat(variables('factoryId'), '/dataflows/lego_themes')]"
 			]
 		}
 	]
