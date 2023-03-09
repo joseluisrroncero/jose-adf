@@ -13,7 +13,13 @@
 			"retryPolicy": {
 				"intervalInSeconds": 30
 			},
-			"dependsOn": []
+			"dependsOn": [
+				{
+					"type": "SelfDependencyTumblingWindowTriggerReference",
+					"size": "0.00:00:00",
+					"offset": "-1.00:00:00"
+				}
+			]
 		}
 	}
 }
