@@ -131,27 +131,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Hour",
-						"interval": 24,
-						"startTime": "2023-03-03T11:09:00Z",
-						"timeZone": "UTC"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/trigger2')]",
+			"name": "[concat(parameters('factoryName'), '/TumblingWindowTrigger')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -161,7 +141,7 @@
 				"typeProperties": {
 					"frequency": "Hour",
 					"interval": 24,
-					"startTime": "2023-03-03T12:13:00Z",
+					"startTime": "2023-03-09T09:28:00Z",
 					"delay": "00:00:00",
 					"maxConcurrency": 50,
 					"retryPolicy": {
@@ -171,7 +151,7 @@
 						{
 							"type": "SelfDependencyTumblingWindowTriggerReference",
 							"size": "0.00:00:00",
-							"offset": "-0.00:00:00"
+							"offset": "-1.00:00:00"
 						}
 					]
 				}
@@ -278,6 +258,45 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ASQL_lego_themes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "lego",
+					"table": "themes"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/HTTP_lego_themes')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -318,27 +337,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/HttpServer1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "lego",
-					"table": "themes"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
 			]
 		},
 		{
@@ -480,13 +478,13 @@
 								"referenceName": "ADLS_lego_themes",
 								"type": "DatasetReference"
 							},
-							"name": "ADLSLegoThemes"
+							"name": "ADLSlegoThemes"
 						}
 					],
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable1",
+								"referenceName": "ASQL_lego_themes",
 								"type": "DatasetReference"
 							},
 							"name": "ASQLlegoThemes"
@@ -506,15 +504,15 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false,",
-						"     format: 'parquet') ~> ADLSLegoThemes",
-						"ADLSLegoThemes derive(load_date = currentDate()) ~> AddLoadDate",
+						"     format: 'parquet') ~> ADLSlegoThemes",
+						"ADLSlegoThemes derive(load_date = currentDate()) ~> AddLoadDate",
 						"AddLoadDate sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     deletable:false,",
 						"     insertable:true,",
 						"     updateable:false,",
 						"     upsertable:false,",
-						"     truncate:true,",
+						"     recreate:true,",
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
@@ -524,7 +522,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ADLS_lego_themes')]",
-				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
+				"[concat(variables('factoryId'), '/datasets/ASQL_lego_themes')]"
 			]
 		},
 		{
@@ -534,7 +532,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Lego_ADLS_to_ASQL_Themes",
+						"name": "Data flow1",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [],
 						"policy": {
@@ -551,10 +549,9 @@
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
-									"ADLSLegoThemes": {},
+									"ADLSlegoThemes": {},
 									"ASQLlegoThemes": {}
-								},
-								"linkedServiceParameters": {}
+								}
 							},
 							"staging": {},
 							"compute": {
@@ -626,6 +623,46 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/lego_copy_themes_HTTP_ADLS')]",
 				"[concat(variables('factoryId'), '/pipelines/Lego_ADLS_to_ASQL_Themes')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ScheduleTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "orchestrating_lego",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Week",
+						"interval": 1,
+						"startTime": "2023-03-09T09:22:00Z",
+						"endTime": "2023-03-09T09:22:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"hours": [
+								13
+							],
+							"weekDays": [
+								"Sunday",
+								"Friday"
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/orchestrating_lego')]"
 			]
 		}
 	]
