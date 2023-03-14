@@ -1,9 +1,9 @@
 {
-	"name": "pipeline1",
+	"name": "Copy_Lego_Themes_ADLS_to_SQL",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "Copiar Datos ADLS a SQL",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
