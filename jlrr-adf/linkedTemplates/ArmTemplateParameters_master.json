@@ -30,7 +30,7 @@
 			"value": "serverpplu.database.windows.net"
 		},
 		"SSISintegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
-			"value": "admin"
+			"value": "jlrrsql"
 		},
 		"SSISintegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"value": ""

@@ -41,7 +41,7 @@
 		},
 		"SSISintegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
 			"type": "string",
-			"defaultValue": "admin"
+			"defaultValue": "jlrrsql"
 		},
 		"SSISintegrationRuntime_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"type": "secureString"
