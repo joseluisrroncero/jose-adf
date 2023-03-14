@@ -12,7 +12,7 @@
 			"ssisProperties": {
 				"catalogInfo": {
 					"catalogServerEndpoint": "serverpplu.database.windows.net",
-					"catalogAdminUserName": "jlrrsql",
+					"catalogAdminUserName": "jlrrbosonit",
 					"catalogAdminPassword": {
 						"type": "SecureString",
 						"value": "**********"
