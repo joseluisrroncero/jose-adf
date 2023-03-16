@@ -24,16 +24,6 @@
 					}
 				],
 				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "HttpReadSettings",
-							"requestMethod": "GET"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
 					"sink": {
 						"type": "ParquetSink",
 						"storeSettings": {
@@ -65,50 +55,33 @@
 							{
 								"source": {
 									"name": "id",
-									"type": "String",
-									"physicalType": "String"
+									"type": "String"
 								},
 								"sink": {
-									"name": "TemeID",
-									"physicalType": "UTF8"
+									"name": "TemeID"
 								}
 							},
 							{
 								"source": {
 									"name": "name",
-									"type": "String",
-									"physicalType": "String"
+									"type": "String"
 								},
 								"sink": {
-									"name": "ThemeName",
-									"physicalType": "UTF8"
+									"name": "ThemeName"
 								}
 							},
 							{
 								"source": {
 									"name": "parent_id",
-									"type": "String",
-									"physicalType": "String"
+									"type": "String"
 								},
 								"sink": {
-									"name": "Parent_ThemeID",
-									"physicalType": "UTF8"
+									"name": "Parent_ThemeID"
 								}
 							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
+						]
 					}
 				},
-				"inputs": [
-					{
-						"referenceName": "HTTP_lego_themes",
-						"type": "DatasetReference"
-					}
-				],
 				"outputs": [
 					{
 						"referenceName": "ADLS_lego_themes",
