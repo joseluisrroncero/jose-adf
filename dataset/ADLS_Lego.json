@@ -1,0 +1,30 @@
+{
+	"name": "ADLS_Lego",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorageTutorial",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"FileNameADLS": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().FileNameADLS",
+					"type": "Expression"
+				},
+				"fileSystem": "lego"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

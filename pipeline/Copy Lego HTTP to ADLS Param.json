@@ -1,0 +1,94 @@
+{
+	"name": "Copy Lego HTTP to ADLS Param",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy Parametrizar",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "@{'themes.csv.gz'}"
+					},
+					{
+						"name": "Destination",
+						"value": "lego//@{'themes.parquet'}"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "HttpReadSettings",
+							"requestMethod": "GET"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "HTTP_Lego",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileNameHTTP": {
+								"value": "@pipeline().parameters.FileNameHTTP",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ADLS_Lego",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileNameADLS": {
+								"value": "@pipeline().parameters.FileNameADLS",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"FileNameHTTP": {
+				"type": "string"
+			},
+			"FileNameADLS": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
