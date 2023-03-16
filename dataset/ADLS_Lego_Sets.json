@@ -1,0 +1,33 @@
+{
+	"name": "ADLS_Lego_Sets",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorageTutorial",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "sets.parquet",
+				"fileSystem": "lego"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "TemeID",
+				"type": "UTF8"
+			},
+			{
+				"name": "ThemeName",
+				"type": "UTF8"
+			},
+			{
+				"name": "Parent_ThemeID",
+				"type": "UTF8"
+			}
+		]
+	}
+}
