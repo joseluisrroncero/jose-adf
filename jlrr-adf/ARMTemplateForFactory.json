@@ -71,11 +71,11 @@
 						"userProperties": [
 							{
 								"name": "Source",
-								"value": "lego//@{'sets.csv'}"
+								"value": "lego//@{'sets.parquet'}"
 							},
 							{
 								"name": "Destination",
-								"value": "lego.@{'lego.sets'}"
+								"value": "lego.@{'sets'}"
 							}
 						],
 						"typeProperties": {
@@ -98,6 +98,20 @@
 								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"logSettings": {
+								"enableCopyActivityLog": true,
+								"copyActivityLogSettings": {
+									"logLevel": "Warning",
+									"enableReliableLogging": false
+								},
+								"logLocationSettings": {
+									"linkedServiceName": {
+										"referenceName": "AzureDataLakeStorageTutorial",
+										"type": "LinkedServiceReference"
+									}
+								}
+							},
 							"translator": {
 								"type": "TabularTranslator",
 								"typeConversion": true,
@@ -135,7 +149,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ADLS_Lego')]",
-				"[concat(variables('factoryId'), '/datasets/ASQL_Lego')]"
+				"[concat(variables('factoryId'), '/datasets/ASQL_Lego')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorageTutorial')]"
 			]
 		},
 		{
@@ -1553,6 +1568,7 @@
 										},
 										"sink": {
 											"name": "set_num",
+											"type": "String",
 											"physicalType": "nvarchar"
 										}
 									},
@@ -1563,7 +1579,9 @@
 											"physicalType": "UTF8"
 										},
 										"sink": {
-											"name": "Nombre"
+											"name": "name",
+											"type": "String",
+											"physicalType": "nvarchar"
 										}
 									},
 									{
@@ -1573,7 +1591,9 @@
 											"physicalType": "UTF8"
 										},
 										"sink": {
-											"name": "Año"
+											"name": "year",
+											"type": "String",
+											"physicalType": "nvarchar"
 										}
 									},
 									{
@@ -1583,7 +1603,9 @@
 											"physicalType": "UTF8"
 										},
 										"sink": {
-											"name": "ID Tema"
+											"name": "theme_id",
+											"type": "String",
+											"physicalType": "nvarchar"
 										}
 									},
 									{
@@ -1593,7 +1615,9 @@
 											"physicalType": "UTF8"
 										},
 										"sink": {
-											"name": "PartNum"
+											"name": "num_parts",
+											"type": "String",
+											"physicalType": "nvarchar"
 										}
 									},
 									{
@@ -1603,7 +1627,9 @@
 											"physicalType": "UTF8"
 										},
 										"sink": {
-											"name": "URL"
+											"name": "img_url",
+											"type": "String",
+											"physicalType": "nvarchar"
 										}
 									}
 								],
@@ -1660,6 +1686,113 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/lego_sets')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ADLS_Lego_Sets",
+								"type": "DatasetReference"
+							},
+							"name": "FuenteADLS"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ASQL_Lego_Sets",
+								"type": "DatasetReference"
+							},
+							"name": "ReceptorSQL",
+							"rejectedDataLinkedService": {
+								"referenceName": "AzureDataLakeStorageTutorial",
+								"type": "LinkedServiceReference"
+							}
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          TemeID as string,",
+						"          ThemeName as string,",
+						"          Parent_ThemeID as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> FuenteADLS",
+						"FuenteADLS sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     recreate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> ReceptorSQL"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ADLS_Lego_Sets')]",
+				"[concat(variables('factoryId'), '/datasets/ASQL_Lego_Sets')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorageTutorial')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Flujo_sets')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Flujo Sets",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "lego_sets",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"FuenteADLS": {},
+									"ReceptorSQL": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/lego_sets')]"
 			]
 		}
 	]
