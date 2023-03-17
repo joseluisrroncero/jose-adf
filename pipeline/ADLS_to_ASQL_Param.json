@@ -16,11 +16,11 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "lego//@{'sets.parquet'}"
+						"value": "lego//@{'themes.parquet'}"
 					},
 					{
 						"name": "Destination",
-						"value": "lego.@{'sets'}"
+						"value": "lego.@{'themes'}"
 					}
 				],
 				"typeProperties": {
@@ -71,7 +71,7 @@
 						"referenceName": "ADLS_Lego",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileNameADLS": "sets.parquet"
+							"FileNameADLS": "themes.parquet"
 						}
 					}
 				],
@@ -80,7 +80,7 @@
 						"referenceName": "ASQL_Lego",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": "sets"
+							"TableName": "themes"
 						}
 					}
 				]
