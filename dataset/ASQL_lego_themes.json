@@ -7,7 +7,20 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": [],
+		"schema": [
+			{
+				"name": "TemeID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ThemeName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Parent_ThemeID",
+				"type": "nvarchar"
+			}
+		],
 		"typeProperties": {
 			"schema": "lego",
 			"table": "themes"

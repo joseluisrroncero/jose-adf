@@ -1,9 +1,9 @@
 {
-	"name": "HTTP_to_ADLS_Pipeline_Param",
+	"name": "HHTP_to_ADLS_DataSet_Param",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy Parametrizar",
+				"name": "Copy Param",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -16,11 +16,11 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "@{pipeline().parameters.FileNameHTTP}"
+						"value": "@{'<FileNameHTTP>'}"
 					},
 					{
 						"name": "Destination",
-						"value": "lego//@{pipeline().parameters.FileNameADLS}"
+						"value": "lego//@{'<FileNameADLS>'}"
 					}
 				],
 				"typeProperties": {
@@ -46,21 +46,6 @@
 						}
 					},
 					"enableStaging": false,
-					"enableSkipIncompatibleRow": true,
-					"logSettings": {
-						"enableCopyActivityLog": true,
-						"copyActivityLogSettings": {
-							"logLevel": "Warning",
-							"enableReliableLogging": false
-						},
-						"logLocationSettings": {
-							"linkedServiceName": {
-								"referenceName": "AzureDataLakeStorageTutorial",
-								"type": "LinkedServiceReference"
-							},
-							"path": "lego/errors"
-						}
-					},
 					"translator": {
 						"type": "TabularTranslator",
 						"typeConversion": true,
@@ -75,10 +60,7 @@
 						"referenceName": "HTTP_Lego",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileNameHTTP": {
-								"value": "@pipeline().parameters.FileNameHTTP",
-								"type": "Expression"
-							}
+							"FileNameHTTP": "themes.csv.gz"
 						}
 					}
 				],
@@ -87,23 +69,12 @@
 						"referenceName": "ADLS_Lego",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileNameADLS": {
-								"value": "@pipeline().parameters.FileNameADLS",
-								"type": "Expression"
-							}
+							"FileNameADLS": "themes.parquet"
 						}
 					}
 				]
 			}
 		],
-		"parameters": {
-			"FileNameHTTP": {
-				"type": "string"
-			},
-			"FileNameADLS": {
-				"type": "string"
-			}
-		},
 		"annotations": []
 	}
 }
