@@ -341,7 +341,20 @@
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
-				"schema": [],
+				"schema": [
+					{
+						"name": "TemeID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ThemeName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Parent_ThemeID",
+						"type": "nvarchar"
+					}
+				],
 				"typeProperties": {
 					"schema": "lego",
 					"table": "themes"
@@ -543,7 +556,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Copy Lego HTTP to ADLS Param')]",
+			"name": "[concat(parameters('factoryName'), '/HTTP_to_ADLS_Pipeline_Param')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -562,11 +575,11 @@
 						"userProperties": [
 							{
 								"name": "Source",
-								"value": "@{'themes.csv.gz'}"
+								"value": "@{pipeline().parameters.FileNameHTTP}"
 							},
 							{
 								"name": "Destination",
-								"value": "lego//@{'themes.parquet'}"
+								"value": "lego//@{pipeline().parameters.FileNameADLS}"
 							}
 						],
 						"typeProperties": {
@@ -592,6 +605,21 @@
 								}
 							},
 							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"logSettings": {
+								"enableCopyActivityLog": true,
+								"copyActivityLogSettings": {
+									"logLevel": "Warning",
+									"enableReliableLogging": false
+								},
+								"logLocationSettings": {
+									"linkedServiceName": {
+										"referenceName": "AzureDataLakeStorageTutorial",
+										"type": "LinkedServiceReference"
+									},
+									"path": "lego/errors"
+								}
+							},
 							"translator": {
 								"type": "TabularTranslator",
 								"typeConversion": true,
@@ -643,7 +671,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/HTTP_Lego')]",
-				"[concat(variables('factoryId'), '/datasets/ADLS_Lego')]"
+				"[concat(variables('factoryId'), '/datasets/ADLS_Lego')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorageTutorial')]"
 			]
 		}
 	]
