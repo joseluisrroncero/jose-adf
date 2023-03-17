@@ -21,7 +21,8 @@
 				},
 				"fileSystem": "lego"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": "\u0001",
+			"compressionCodec": "gzip",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
