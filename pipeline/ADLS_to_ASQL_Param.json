@@ -35,14 +35,38 @@
 							"type": "DelimitedTextReadSettings"
 						}
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
 						"referenceName": "ADLS_Lego",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileNameADLS": "sets.csv"
+							"FileNameADLS": "sets.parquet"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ASQL_Lego",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "sets"
 						}
 					}
 				]
