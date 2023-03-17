@@ -42,6 +42,7 @@
 								},
 								"sink": {
 									"name": "set_num",
+									"type": "String",
 									"physicalType": "nvarchar"
 								}
 							},
@@ -52,7 +53,9 @@
 									"physicalType": "UTF8"
 								},
 								"sink": {
-									"name": "Nombre"
+									"name": "name",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -62,7 +65,9 @@
 									"physicalType": "UTF8"
 								},
 								"sink": {
-									"name": "Año"
+									"name": "year",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -72,7 +77,9 @@
 									"physicalType": "UTF8"
 								},
 								"sink": {
-									"name": "ID Tema"
+									"name": "theme_id",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -82,7 +89,9 @@
 									"physicalType": "UTF8"
 								},
 								"sink": {
-									"name": "PartNum"
+									"name": "num_parts",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -92,7 +101,9 @@
 									"physicalType": "UTF8"
 								},
 								"sink": {
-									"name": "URL"
+									"name": "img_url",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							}
 						],

@@ -16,11 +16,11 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "lego//@{'sets.csv'}"
+						"value": "lego//@{'sets.parquet'}"
 					},
 					{
 						"name": "Destination",
-						"value": "lego.@{'lego.sets'}"
+						"value": "lego.@{'sets'}"
 					}
 				],
 				"typeProperties": {
@@ -43,6 +43,20 @@
 						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
+					"enableSkipIncompatibleRow": true,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "AzureDataLakeStorageTutorial",
+								"type": "LinkedServiceReference"
+							}
+						}
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"typeConversion": true,

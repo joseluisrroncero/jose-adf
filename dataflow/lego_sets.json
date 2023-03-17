@@ -1,0 +1,53 @@
+{
+	"name": "lego_sets",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ADLS_Lego_Sets",
+						"type": "DatasetReference"
+					},
+					"name": "FuenteADLS"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ASQL_Lego_Sets",
+						"type": "DatasetReference"
+					},
+					"name": "ReceptorSQL",
+					"rejectedDataLinkedService": {
+						"referenceName": "AzureDataLakeStorageTutorial",
+						"type": "LinkedServiceReference"
+					}
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          TemeID as string,",
+				"          ThemeName as string,",
+				"          Parent_ThemeID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> FuenteADLS",
+				"FuenteADLS sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> ReceptorSQL"
+			]
+		}
+	}
+}
