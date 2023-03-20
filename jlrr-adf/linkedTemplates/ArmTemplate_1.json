@@ -464,7 +464,7 @@
 								"referenceName": "HTTP_Lego",
 								"type": "DatasetReference",
 								"parameters": {
-									"FileNameHTTP": "themes.csv.gz"
+									"FileNameHTTP": "sets.csv.gz"
 								}
 							}
 						],
@@ -473,7 +473,7 @@
 								"referenceName": "ADLS_Lego",
 								"type": "DatasetReference",
 								"parameters": {
-									"FileNameADLS": "themes.parquet"
+									"FileNameADLS": "sets.parquet"
 								}
 							}
 						]
