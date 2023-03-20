@@ -69,7 +69,8 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "TemeID",
+									"name": "id",
+									"type": "String",
 									"physicalType": "UTF8"
 								}
 							},
@@ -80,7 +81,8 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "ThemeName",
+									"name": "name",
+									"type": "String",
 									"physicalType": "UTF8"
 								}
 							},
@@ -91,7 +93,8 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Parent_ThemeID",
+									"name": "parent_id",
+									"type": "String",
 									"physicalType": "UTF8"
 								}
 							}

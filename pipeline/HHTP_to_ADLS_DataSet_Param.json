@@ -61,7 +61,7 @@
 						"referenceName": "HTTP_Lego",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileNameHTTP": "themes.csv.gz"
+							"FileNameHTTP": "sets.csv.gz"
 						}
 					}
 				],
