@@ -238,14 +238,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().FileNameADLS",
-							"type": "Expression"
-						},
+						"fileName": "themes.parquet",
 						"fileSystem": "lego"
 					},
-					"columnDelimiter": "\u0001",
-					"compressionCodec": "gzip",
+					"columnDelimiter": ",",
 					"escapeChar": "\\",
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
@@ -460,6 +456,7 @@
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
+					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
 				"schema": []

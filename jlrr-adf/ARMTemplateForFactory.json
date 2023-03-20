@@ -164,7 +164,7 @@
 								"referenceName": "ADLS_Lego",
 								"type": "DatasetReference",
 								"parameters": {
-									"FileNameADLS": "sets.parquet"
+									"FileNameADLS": "themes.parquet"
 								}
 							}
 						],
@@ -173,7 +173,7 @@
 								"referenceName": "ASQL_Lego",
 								"type": "DatasetReference",
 								"parameters": {
-									"TableName": "sets"
+									"TableName": "themes"
 								}
 							}
 						]
@@ -535,11 +535,11 @@
 						"userProperties": [
 							{
 								"name": "Source",
-								"value": "@{'<FileNameHTTP>'}"
+								"value": "@{'themes.csv.gz'}"
 							},
 							{
 								"name": "Destination",
-								"value": "lego//@{'<FileNameADLS>'}"
+								"value": "lego//themes.parquet"
 							}
 						],
 						"typeProperties": {
@@ -1144,14 +1144,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().FileNameADLS",
-							"type": "Expression"
-						},
+						"fileName": "themes.parquet",
 						"fileSystem": "lego"
 					},
-					"columnDelimiter": "\u0001",
-					"compressionCodec": "gzip",
+					"columnDelimiter": ",",
 					"escapeChar": "\\",
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
@@ -1366,6 +1362,7 @@
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
+					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
 				"schema": []
