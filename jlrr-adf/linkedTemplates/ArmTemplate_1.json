@@ -94,44 +94,6 @@
 							},
 							"translator": {
 								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "id",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "TemeID",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "name",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "ThemeName",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "parent_id",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Parent_ThemeID",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									}
-								],
 								"typeConversion": true,
 								"typeConversionSettings": {
 									"allowDataTruncation": true,
@@ -144,7 +106,7 @@
 								"referenceName": "ADLS_Lego",
 								"type": "DatasetReference",
 								"parameters": {
-									"FileNameADLS": "themes.parquet"
+									"FileNameADLS": "sets.parquet"
 								}
 							}
 						],
@@ -153,7 +115,7 @@
 								"referenceName": "ASQL_Lego",
 								"type": "DatasetReference",
 								"parameters": {
-									"TableName": "themes"
+									"TableName": "sets"
 								}
 							}
 						]
