@@ -109,7 +109,7 @@
 						"referenceName": "ADLS_Lego",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileNameADLS": "sets.parquet"
+							"FileNameADLS": "themes.parquet"
 						}
 					}
 				],
@@ -118,7 +118,7 @@
 						"referenceName": "ASQL_Lego",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": "sets"
+							"TableName": "themes"
 						}
 					}
 				]
