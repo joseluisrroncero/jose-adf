@@ -126,7 +126,7 @@
 								"referenceName": "ADLS_Lego",
 								"type": "DatasetReference",
 								"parameters": {
-									"FileNameADLS": "sets.parquet"
+									"FileNameADLS": "themes.parquet"
 								}
 							}
 						],
@@ -135,7 +135,7 @@
 								"referenceName": "ASQL_Lego",
 								"type": "DatasetReference",
 								"parameters": {
-									"TableName": "sets"
+									"TableName": "themes"
 								}
 							}
 						]
@@ -620,7 +620,7 @@
 								"referenceName": "HTTP_Lego",
 								"type": "DatasetReference",
 								"parameters": {
-									"FileNameHTTP": "themes.csv.gz"
+									"FileNameHTTP": "sets.csv.gz"
 								}
 							}
 						],
@@ -629,7 +629,7 @@
 								"referenceName": "ADLS_Lego",
 								"type": "DatasetReference",
 								"parameters": {
-									"FileNameADLS": "themes.parquet"
+									"FileNameADLS": "sets.parquet"
 								}
 							}
 						]
@@ -1050,7 +1050,8 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "TemeID",
+											"name": "id",
+											"type": "String",
 											"physicalType": "UTF8"
 										}
 									},
@@ -1061,7 +1062,8 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "ThemeName",
+											"name": "name",
+											"type": "String",
 											"physicalType": "UTF8"
 										}
 									},
@@ -1072,7 +1074,8 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "Parent_ThemeID",
+											"name": "parent_id",
+											"type": "String",
 											"physicalType": "UTF8"
 										}
 									}
@@ -1257,7 +1260,7 @@
 						"fileName": "themes.parquet",
 						"fileSystem": "lego"
 					},
-					"compressionCodec": "snappy"
+					"compressionCodec": "gzip"
 				},
 				"schema": [
 					{

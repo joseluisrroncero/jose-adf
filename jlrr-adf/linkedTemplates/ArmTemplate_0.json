@@ -311,7 +311,7 @@
 						"fileName": "themes.parquet",
 						"fileSystem": "lego"
 					},
-					"compressionCodec": "snappy"
+					"compressionCodec": "gzip"
 				},
 				"schema": [
 					{
