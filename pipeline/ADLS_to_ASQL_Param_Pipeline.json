@@ -1,5 +1,5 @@
 {
-	"name": "ADLS_to_ASQL_Param_DS",
+	"name": "ADLS_to_ASQL_Param_Pipeline",
 	"properties": {
 		"activities": [
 			{
@@ -16,11 +16,11 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "lego//@{'themes.parquet'}"
+						"value": "lego//@{pipeline().parameters.FileNameADLS}"
 					},
 					{
 						"name": "Destination",
-						"value": "lego.@{'themes'}"
+						"value": "lego.@{pipeline().parameters.FileNameASQL}"
 					}
 				],
 				"typeProperties": {
@@ -71,7 +71,10 @@
 						"referenceName": "ADLS_Lego",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileNameADLS": "sets.parquet"
+							"FileNameADLS": {
+								"value": "@pipeline().parameters.FileNameADLS",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -80,12 +83,23 @@
 						"referenceName": "ASQL_Lego",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": "sets"
+							"TableName": {
+								"value": "@pipeline().parameters.FileNameASQL",
+								"type": "Expression"
+							}
 						}
 					}
 				]
 			}
 		],
+		"parameters": {
+			"FileNameADLS": {
+				"type": "string"
+			},
+			"FileNameASQL": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
