@@ -51,11 +51,11 @@
 						"userProperties": [
 							{
 								"name": "Source",
-								"value": "lego//@{'themes.parquet'}"
+								"value": "lego//@{'<FileNameADLS>'}"
 							},
 							{
 								"name": "Destination",
-								"value": "lego.@{'themes'}"
+								"value": "lego.@{'<TableName>'}"
 							}
 						],
 						"typeProperties": {
