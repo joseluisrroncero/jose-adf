@@ -978,6 +978,249 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Variables')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set Files",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Files",
+							"value": [
+								"colores",
+								"inventarios",
+								"inventory_parts",
+								"part_categories",
+								"piezas",
+								"conjuntos",
+								"temas"
+							]
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Set Files",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@pipeline().parameters.LoadAllFiles",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "Anexar Inventory Sets",
+									"type": "AppendVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Files",
+										"value": "inventory_sets"
+									}
+								},
+								{
+									"name": "Anexar Part Relationships",
+									"type": "AppendVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Files",
+										"value": "part_relationships"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Set List of Files",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "If Condition1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "ListOfFiles",
+							"value": {
+								"value": "Load (length(variables('Files'))) files: @{join(variables('Files'),'.')}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"LoadAllFiles": {
+						"type": "bool",
+						"defaultValue": false
+					}
+				},
+				"variables": {
+					"Files": {
+						"type": "Array"
+					},
+					"ListOfFiles": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Variables_ForEach')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set Files",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Files",
+							"value": [
+								"colores",
+								"inventarios",
+								"inventory_parts",
+								"part_categories",
+								"piezas",
+								"conjuntos",
+								"temas"
+							]
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Set Files",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@pipeline().parameters.LoadAllFiles",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "Anexar Inventory Sets",
+									"type": "AppendVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Files",
+										"value": "inventory_sets"
+									}
+								},
+								{
+									"name": "Anexar Part Relationships",
+									"type": "AppendVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Files",
+										"value": "part_relationships"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "ForEach File",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "If Condition1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@variables('Files')",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Execute Pipeline Param",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "HTTP_to_ADLS_Pipeline_Param",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"FileNameHTTP": {
+												"value": "@item()",
+												"type": "Expression"
+											},
+											"FileNameADLS": {
+												"value": "@item()",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"LoadAllFiles": {
+						"type": "bool",
+						"defaultValue": false
+					}
+				},
+				"variables": {
+					"Files": {
+						"type": "Array"
+					},
+					"ListOfFiles": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/HTTP_to_ADLS_Pipeline_Param')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/lego_copy_themes_HTTP_ADLS')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
