@@ -87,16 +87,12 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "HTTP_to_ADLS_Pipeline_Param",
+									"referenceName": "HHTP_to_ADLS_Tut_Param",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
 								"parameters": {
-									"FileNameHTTP": {
-										"value": "@item()",
-										"type": "Expression"
-									},
-									"FileNameADLS": {
+									"FileName": {
 										"value": "@item()",
 										"type": "Expression"
 									}
