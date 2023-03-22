@@ -1338,13 +1338,13 @@
 						"typeProperties": {
 							"variableName": "Files",
 							"value": [
-								"colores",
-								"inventarios",
+								"colors",
+								"inventories",
 								"inventory_parts",
 								"part_categories",
-								"piezas",
-								"conjuntos",
-								"temas"
+								"parts",
+								"sets",
+								"themes"
 							]
 						}
 					},
