@@ -327,7 +327,7 @@
 							"waitOnCompletion": true,
 							"parameters": {
 								"FileName": {
-									"value": "@activity('LookUp Lego').output.firstRow.SourceFileName.csv.gz",
+									"value": "@activity('LookUp Lego').output.value[1].SourceFileName",
 									"type": "Expression"
 								}
 							}
