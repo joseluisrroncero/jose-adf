@@ -636,7 +636,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/HHTP_to_ADLS_DataSet_Param')]",
+			"name": "[concat(parameters('factoryName'), '/HHTP_to_ADLS_Tut_Param')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1267,16 +1267,12 @@
 									"userProperties": [],
 									"typeProperties": {
 										"pipeline": {
-											"referenceName": "HTTP_to_ADLS_Pipeline_Param",
+											"referenceName": "HHTP_to_ADLS_Tut_Param",
 											"type": "PipelineReference"
 										},
 										"waitOnCompletion": true,
 										"parameters": {
-											"FileNameHTTP": {
-												"value": "@item()",
-												"type": "Expression"
-											},
-											"FileNameADLS": {
+											"FileName": {
 												"value": "@item()",
 												"type": "Expression"
 											}
@@ -1308,7 +1304,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/HTTP_to_ADLS_Pipeline_Param')]"
+				"[concat(variables('factoryId'), '/pipelines/HHTP_to_ADLS_Tut_Param')]"
 			]
 		},
 		{
