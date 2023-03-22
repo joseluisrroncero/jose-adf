@@ -1206,17 +1206,13 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "HTTP_to_ADLS_Pipeline_Param",
+								"referenceName": "HHTP_to_ADLS_Tut_Param",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
 							"parameters": {
-								"FileNameHTTP": {
-									"value": "@activity('LookUp Lego').output.firstRow.SourceFileName",
-									"type": "Expression"
-								},
-								"FileNameADLS": {
-									"value": "@activity('LookUp Lego').output.firstRow.SourceFileName",
+								"FileName": {
+									"value": "@activity('LookUp Lego').output.SourceFileName",
 									"type": "Expression"
 								}
 							}
@@ -1231,7 +1227,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/LegoConfigurationFile')]",
-				"[concat(variables('factoryId'), '/pipelines/HTTP_to_ADLS_Pipeline_Param')]"
+				"[concat(variables('factoryId'), '/pipelines/HHTP_to_ADLS_Tut_Param')]"
 			]
 		},
 		{
