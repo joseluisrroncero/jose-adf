@@ -16,11 +16,11 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "@{'themes.csv.gz'}"
+						"value": "@{pipeline().parameters.FileName}.csv"
 					},
 					{
 						"name": "Destination",
-						"value": "lego//themes.parquet"
+						"value": "lego//@{pipeline().parameters.FileName}.csv"
 					}
 				],
 				"typeProperties": {
@@ -61,7 +61,10 @@
 						"referenceName": "HTTP_Lego",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileNameHTTP": "sets.csv.gz"
+							"FileNameHTTP": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -70,12 +73,20 @@
 						"referenceName": "ADLS_Lego",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileNameADLS": "sets.parquet"
+							"FileNameADLS": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
 						}
 					}
 				]
 			}
 		],
+		"parameters": {
+			"FileName": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
