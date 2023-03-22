@@ -53,7 +53,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"FileName": {
-							"value": "@activity('LookUp Lego').output.SourceFileName",
+							"value": "@activity('LookUp Lego').output.firstRow.SourceFileName.csv.gz",
 							"type": "Expression"
 						}
 					}
